@@ -135,60 +135,63 @@ button:hover {
         <button type="button" onclick="obliczKoszty()">Oblicz Koszty</button>
     </form>
 
-    <!-- Wyniki -->
-    <div class="results">
-        <p id="wyniki"></p>
-    </div>
+<!-- Wyniki -->
+<div class="results">
+    <p id="wyniki"></p>
+</div>
 
-    <script>
-        function obliczKoszty() {
-            const powierzchnia = parseFloat(document.getElementById("powierzchnia").value);
-            const iloscObrzezy = parseFloat(document.getElementById("iloscObrzezy").value);
-            const kosztObrzezy = parseFloat(document.getElementById("kosztObrzezy").value);
-            const kosztKostki = parseFloat(document.getElementById("kosztKostki").value);
-            const rodzajKostki = parseFloat(document.getElementById("rodzajKostki").value);
-            const rodzajObrzezy = parseFloat(document.getElementById("rodzajObrzezy").value);
-            const obciazenie = parseFloat(document.getElementById("obciazenie").value);
-            const rodzajGruntu = parseFloat(document.getElementById("rodzajGruntu").value);
-            const wzorUkladania = parseFloat(document.getElementById("wzorUkladania").value);
+<script>
+    function obliczKoszty() {
+        const powierzchnia = parseFloat(document.getElementById("powierzchnia").value);
+        const iloscObrzezy = parseFloat(document.getElementById("iloscObrzezy").value);
+        const kosztObrzezy = parseFloat(document.getElementById("kosztObrzezy").value);
+        const kosztKostki = parseFloat(document.getElementById("kosztKostki").value);
+        const rodzajKostki = parseFloat(document.getElementById("rodzajKostki").value);
+        const rodzajObrzezy = parseFloat(document.getElementById("rodzajObrzezy").value);
+        const obciazenie = parseFloat(document.getElementById("obciazenie").value);
+        const rodzajGruntu = parseFloat(document.getElementById("rodzajGruntu").value);
+        const wzorUkladania = parseFloat(document.getElementById("wzorUkladania").value);
 
-            // Obliczenia
-            const powierzchniaBrutto = powierzchnia * wzorUkladania;
-            const iloscKostki = powierzchniaBrutto;
-            const kosztKostkiRazem = rodzajKostki * powierzchniaBrutto;
+        // Obliczenia
+        const powierzchniaBrutto = powierzchnia * wzorUkladania;
+        const iloscKostki = powierzchniaBrutto;
+        const kosztKostkiRazem = rodzajKostki * powierzchniaBrutto;
 
-            const iloscObrzezyBrutto = iloscObrzezy * 1.1; // Dodatek 10% na docinki
-            const kosztObrzezyRazem = iloscObrzezyBrutto * rodzajObrzezy;
+        const iloscObrzezyBrutto = iloscObrzezy * 1.1; // Dodatek 10% na docinki
+        const kosztObrzezyRazem = iloscObrzezyBrutto * rodzajObrzezy;
 
-            const gruboscWarstwy = obciazenie / 100; // Zamiana na metry
-            const iloscZiemi = powierzchnia * gruboscWarstwy;
+        const gruboscWarstwy = obciazenie / 100; // Zamiana na metry
+        const iloscZiemi = powierzchnia * gruboscWarstwy;
 
-            const iloscPiasku = powierzchnia * 0.05 + powierzchnia * 0.01; // Warstwa 5cm + 1cm piaskowanie
-            const iloscBetonu = iloscObrzezyBrutto * 0.02;
-            const iloscKruszywa = (powierzchnia * obciazenie * 1.4) / 100; // Dzielimy przez 100, aby poprawić jednostki
+        const iloscPiasku = powierzchnia * 0.05 + powierzchnia * 0.01; // Warstwa 5cm + 1cm piaskowanie
+        const iloscBetonu = iloscObrzezyBrutto * 0.02;
+        const iloscKruszywa = (powierzchnia * obciazenie * 1.4) / 100; // Dzielimy przez 100, aby poprawić jednostki
 
-            const dodatkowaWarstwa = powierzchnia * (rodzajGruntu / 100);
-            const kosztRobocizny = (powierzchnia * kosztKostki) + (iloscObrzezy * kosztObrzezy);
+        const dodatkowaWarstwa = powierzchnia * (rodzajGruntu / 100);
+        const kosztRobocizny = (powierzchnia * kosztKostki) + (iloscObrzezy * kosztObrzezy);
 
-            // Wyświetlenie wyników
-            document.getElementById("wyniki").innerHTML = `
-                <h3>Koszt materiałów:</h3>
-                Kostka brukowa: ${iloscKostki.toFixed(2)} m² x ${rodzajKostki.toFixed(2)} zł/m² = ${kosztKostkiRazem.toFixed(2)} zł<br>
-                Obrzeża: ${iloscObrzezyBrutto.toFixed(2)} mb x ${rodzajObrzezy.toFixed(2)} zł/mb = ${kosztObrzezyRazem.toFixed(2)} zł<br>
-                Piasek: ${iloscPiasku.toFixed(2)} m³ x 50 zł/m³ = ${(iloscPiasku * 50).toFixed(2)} zł<br>
-                Beton B20 pod obrzeża: ${iloscBetonu.toFixed(2)} m³ x 300 zł/m³ = ${(iloscBetonu * 300).toFixed(2)} zł<br>
-                Kruszywo: ${iloscKruszywa.toFixed(2)} m³ x 100 zł/m³ = ${(iloscKruszywa * 100).toFixed(2)} zł<br>
-                Suma kosztów materiałów: ${(kosztKostkiRazem + kosztObrzezyRazem + iloscPiasku * 50 + iloscBetonu * 300 + iloscKruszywa * 100).toFixed(2)} zł<br>
-                <h3>Koszt robocizny:</h3>
-                Przygotowanie podłoża: ${powierzchnia.toFixed(2)} m² x 20 zł/m² = ${(powierzchnia * 20).toFixed(2)} zł<br>
-                Ułożenie kostki brukowej: ${powierzchniaBrutto.toFixed(2)} m² x ${kosztKostki.toFixed(2)} zł/m² = ${(powierzchniaBrutto * kosztKostki).toFixed(2)} zł<br>
-                Montaż obrzeży: ${iloscObrzezyBrutto.toFixed(2)} mb x ${kosztObrzezy.toFixed(2)} zł/mb = ${(iloscObrzezyBrutto * kosztObrzezy).toFixed(2)} zł<br>
-                Dodatkowa stabilizacja: ${dodatkowaWarstwa.toFixed(2)} m³ x 50 zł/m³ = ${(dodatkowaWarstwa * 50).toFixed(2)} zł<br>
-                Suma kosztów robocizny: ${(powierzchnia * 20 + powierzchniaBrutto * kosztKostki + iloscObrzezyBrutto * kosztObrzezy + dodatkowaWarstwa * 50).toFixed(2)} zł<br>
-                <h3>Podsumowanie:</h3>
-                Koszt całkowity: ${(kosztKostkiRazem + kosztObrzezyRazem + iloscPiasku * 50 + iloscBetonu * 300 + iloscKruszywa * 100 + powierzchnia * 20 + powierzchniaBrutto * kosztKostki + iloscObrzezyBrutto * kosztObrzezy + dodatkowaWarstwa * 50).toFixed(2)} zł
-            `;
-        }
-    </script>
-</body>
-</html>
+        // Nowe równanie pod "Dodatkowe informacje"
+        const iloscZiemiDoZagospodarowania = powierzchnia * gruboscWarstwy;
+
+        // Wyświetlenie wyników
+        document.getElementById("wyniki").innerHTML = `
+            <h3>Dodatkowe informacje:</h3>
+            Ilość ziemi z wykopu: ${iloscZiemi.toFixed(2)} m³<br>
+            <h3>Koszt materiałów:</h3>
+            Kostka brukowa: ${iloscKostki.toFixed(2)} m² x ${rodzajKostki.toFixed(2)} zł/m² = ${kosztKostkiRazem.toFixed(2)} zł<br>
+            Obrzeża: ${iloscObrzezyBrutto.toFixed(2)} mb x ${rodzajObrzezy.toFixed(2)} zł/mb = ${kosztObrzezyRazem.toFixed(2)} zł<br>
+            Piasek: ${iloscPiasku.toFixed(2)} m³ x 50 zł/m³ = ${(iloscPiasku * 50).toFixed(2)} zł<br>
+            Beton B20 pod obrzeża: ${iloscBetonu.toFixed(2)} m³ x 300 zł/m³ = ${(iloscBetonu * 300).toFixed(2)} zł<br>
+            Kruszywo: ${iloscKruszywa.toFixed(2)} m³ x 100 zł/m³ = ${(iloscKruszywa * 100).toFixed(2)} zł<br>
+            Suma kosztów materiałów: ${(kosztKostkiRazem + kosztObrzezyRazem + iloscPiasku * 50 + iloscBetonu * 300 + iloscKruszywa * 100).toFixed(2)} zł<br>
+            <h3>Koszt robocizny:</h3>
+            Przygotowanie podłoża: ${powierzchnia.toFixed(2)} m² x 20 zł/m² = ${(powierzchnia * 20).toFixed(2)} zł<br>
+            Ułożenie kostki brukowej: ${powierzchniaBrutto.toFixed(2)} m² x ${kosztKostki.toFixed(2)} zł/m² = ${(powierzchniaBrutto * kosztKostki).toFixed(2)} zł<br>
+            Montaż obrzeży: ${iloscObrzezyBrutto.toFixed(2)} mb x ${kosztObrzezy.toFixed(2)} zł/mb = ${(iloscObrzezyBrutto * kosztObrzezy).toFixed(2)} zł<br>
+            Dodatkowa stabilizacja: ${dodatkowaWarstwa.toFixed(2)} m³ x 50 zł/m³ = ${(dodatkowaWarstwa * 50).toFixed(2)} zł<br>
+            Suma kosztów robocizny: ${(powierzchnia * 20 + powierzchniaBrutto * kosztKostki + iloscObrzezyBrutto * kosztObrzezy + dodatkowaWarstwa * 50).toFixed(2)} zł<br>
+            <h3>Podsumowanie:</h3>
+            Koszt całkowity: ${(kosztKostkiRazem + kosztObrzezyRazem + iloscPiasku * 50 + iloscBetonu * 300 + iloscKruszywa * 100 + powierzchnia * 20 + powierzchniaBrutto * kosztKostki + iloscObrzezyBrutto * kosztObrzezy + dodatkowaWarstwa * 50).toFixed(2)} zł
+        `;
+    }
+</script>
